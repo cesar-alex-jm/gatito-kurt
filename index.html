@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <title>Entscheidungswürfel</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      text-align: center;
+      margin-top: 50px;
+    }
+    input {
+      margin: 10px;
+      padding: 8px;
+      font-size: 16px;
+    }
+    button {
+      padding: 10px 20px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+    #katzen-container {
+      position: relative;
+      display: inline-block;
+      margin-top: 30px;
+    }
+    #gatito-img {
+      width: 150px;
+      display: none;
+    }
+    #sprechblase {
+      display: none;
+      position: absolute;
+      top: -60px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #fff;
+      border: 2px solid #333;
+      border-radius: 10px;
+      padding: 10px;
+      font-size: 18px;
+      max-width: 200px;
+      box-shadow: 2px 2px 6px rgba(0,0,0,0.2);
+    }
+    #sprechblase::after {
+      content: "";
+      position: absolute;
+      bottom: -10px;
+      left: 50%;
+      transform: translateX(-50%);
+      border-width: 10px 10px 0;
+      border-style: solid;
+      border-color: #fff transparent transparent;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>😺 Gatito Kurt Entscheidungswürfel</h1>
+  <p>Gib zwei Optionen ein:</p>
+
+  <input type="text" id="option1" placeholder="Option 1 (z. B. Ja)">
+  <input type="text" id="option2" placeholder="Option 2 (z. B. Nein)">
+  <br>
+  <button onclick="entscheide()">Entscheidung treffen</button>
+
+  <div id="status"></div>
+
+  <div id="katzen-container">
+    <div id="sprechblase"></div>
+    <img id="gatito-img" src="el-gatito_kuuurt.jpg" alt="Gatito Kurt">
+  </div>
+
+  <script>
+    let punktTimer;
+
+    function entscheide() {
+      const opt1 = document.getElementById("option1").value.trim();
+      const opt2 = document.getElementById("option2").value.trim();
+      const status = document.getElementById("status");
+      const gatitoImg = document.getElementById("gatito-img");
+      const sprechblase = document.getElementById("sprechblase");
+
+      if (!opt1 || !opt2) {
+        alert("Bitte beide Optionen eingeben.");
+        return;
+      }
+
+      // Zurücksetzen
+      sprechblase.style.display = "none";
+      sprechblase.textContent = "";
+      status.textContent = "Gatito Kuuuurt";
+      gatitoImg.style.display = "block";
+
+      let dots = 0;
+      punktTimer = setInterval(() => {
+        dots = (dots + 1) % 4;
+        status.textContent = "Gatito Kuuuurt" + ".".repeat(dots);
+      }, 500);
+
+      const delay = Math.random() * 2 + 5; // 5–7 Sekunden
+
+      setTimeout(() => {
+        clearInterval(punktTimer);
+        const antwort = Math.random() < 0.5 ? opt1 : opt2;
+        status.textContent = "";
+        sprechblase.textContent = antwort;
+        sprechblase.style.display = "block";
+      }, delay * 1000);
+    }
+  </script>
+
+</body>
+</html>
