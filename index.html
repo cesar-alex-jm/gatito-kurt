@@ -47,9 +47,9 @@
     #sprechblase {
       display: none;
       position: absolute;
-      bottom: 100%;
+      top: 0;
       left: 50%;
-      transform: translateX(-50%);
+      transform: translate(-50%, -100%);
       margin-bottom: 10px;
       z-index: 10;
       background: #fff;
@@ -59,12 +59,13 @@
       font-size: 18px;
       max-width: 200px;
       box-shadow: 2px 2px 6px rgba(0,0,0,0.2);
+      text-align: center;
     }
 
     #sprechblase::after {
       content: "";
       position: absolute;
-      top: 100%;
+      bottom: -10px;
       left: 50%;
       transform: translateX(-50%);
       border-width: 10px 10px 0;
@@ -94,13 +95,14 @@
 </head>
 <body>
 
-  <h1>😺 Gatito Kurt – Orakel der Entscheidungen</h1>
+  <h1><img src="el-gatito_kuuurt.jpg" alt="Katze Emoji" style="width:32px; height:32px; vertical-align: middle;" />
+  Gatito Kurt – Orakel der Entscheidungen</h1>
   <p>Was willst du wissen? Frag Gatito Kurt mit zwei Optionen:</p>
 
   <input type="text" id="option1" placeholder="Option 1 (z. B. Pizza)">
   <input type="text" id="option2" placeholder="Option 2 (z. B. Sushi)">
   <br>
-  <button onclick="entscheide()">Zeig mir die Zukunft</button>
+  <button onclick="entscheide()">Alea iacta est</button>
 
   <div id="status"></div>
 
@@ -156,6 +158,7 @@
         const antwort = Math.random() < 0.5 ? opt1 : opt2;
         status.textContent = "";
         sprechblase.innerHTML = `<small>Antwort:</small> <strong>${antwort}</strong>`;
+
         sprechblase.style.display = "block";
       }, delay * 1000);
     }
@@ -163,3 +166,4 @@
 
 </body>
 </html>
+
