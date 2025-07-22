@@ -2,12 +2,20 @@
 <html lang="de">
 <head>
   <meta charset="UTF-8">
-  <title>Entscheidungswürfel</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gatito Kurt – Orakel der Entscheidungen</title>
   <style>
     body {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
       font-family: sans-serif;
       text-align: center;
-      margin-top: 50px;
+      min-height: 100vh;
+      margin: 0;
+      padding: 20px;
+      background: #f4f4f4;
     }
 
     input {
@@ -24,20 +32,25 @@
 
     #katzen-container {
       position: relative;
-      display: inline-block;
+      display: flex;
+      justify-content: center;
+      align-items: center;
       margin-top: 30px;
     }
 
     #gatito-img {
       width: 150px;
       display: none;
-      position: absolute;
       z-index: 1;
     }
 
     #sprechblase {
       display: none;
-      position: fixed;
+      position: absolute;
+      bottom: 100%;
+      left: 50%;
+      transform: translateX(-50%);
+      margin-bottom: 10px;
       z-index: 10;
       background: #fff;
       border: 2px solid #333;
@@ -51,7 +64,7 @@
     #sprechblase::after {
       content: "";
       position: absolute;
-      bottom: -10px;
+      top: 100%;
       left: 50%;
       transform: translateX(-50%);
       border-width: 10px 10px 0;
@@ -72,24 +85,22 @@
     }
 
     .gatito-fliegt {
-      animation: katapultwurf;
+      animation-name: katapultwurf;
       animation-timing-function: ease-in-out;
       animation-fill-mode: forwards;
-      position: absolute;
-      left: 0;
-      bottom: 0;
+      position: relative;
     }
   </style>
 </head>
 <body>
 
-  <h1>😺 Gatito Kurt Orakel der Entscheidungen</h1>
-  <p>Gib die zwei Optionen ein:</p>
+  <h1>😺 Gatito Kurt – Orakel der Entscheidungen</h1>
+  <p>Was willst du wissen? Frag Gatito Kurt mit zwei Optionen:</p>
 
-  <input type="text" id="option1" placeholder="Option 1 (z. B. Option 1)">
-  <input type="text" id="option2" placeholder="Option 2 (z. B. Option 2)">
+  <input type="text" id="option1" placeholder="Option 1 (z. B. Pizza)">
+  <input type="text" id="option2" placeholder="Option 2 (z. B. Sushi)">
   <br>
-  <button onclick="entscheide()">Zeig mir das Schicksal</button>
+  <button onclick="entscheide()">Zeig mir die Zukunft</button>
 
   <div id="status"></div>
 
@@ -100,26 +111,12 @@
 
   <script>
     let punktTimer;
-    let animating = false;
-
-    function updateSprechblasePosition() {
-      const gatitoImg = document.getElementById("gatito-img");
-      const sprechblase = document.getElementById("sprechblase");
-
-      if (!animating) return;
-
-      const rect = gatitoImg.getBoundingClientRect();
-      sprechblase.style.top = `${rect.top + window.scrollY + 10}px`;
-      sprechblase.style.left = `${rect.right + 10}px`;
-
-      requestAnimationFrame(updateSprechblasePosition);
-    }
 
     function starteKatapultAnimation(dauerSekunden) {
       const gatitoImg = document.getElementById("gatito-img");
       gatitoImg.classList.remove("gatito-fliegt");
       gatitoImg.style.animationDuration = `${dauerSekunden}s`;
-      void gatitoImg.offsetWidth;
+      void gatitoImg.offsetWidth; // Reflow trick
       gatitoImg.classList.add("gatito-fliegt");
     }
 
@@ -141,12 +138,10 @@
       status.textContent = "Gatito Kuuuurt";
       gatitoImg.style.display = "block";
 
-      // Zufallszeit 5–7 Sekunden
+      // Zufallsdauer
       const delay = Math.random() * 2 + 5;
 
-      // Start Animation + Blasenverfolgung
-      animating = true;
-      updateSprechblasePosition();
+      // Animation starten
       starteKatapultAnimation(delay);
 
       // Punkte-Animation
@@ -156,13 +151,11 @@
         status.textContent = "Gatito Kuuuurt" + ".".repeat(dots);
       }, 500);
 
-      // Ergebnis anzeigen nach Delay
       setTimeout(() => {
         clearInterval(punktTimer);
-        animating = false;
         const antwort = Math.random() < 0.5 ? opt1 : opt2;
         status.textContent = "";
-        sprechblase.innerHTML = `<strong>${antwort}</strong><br><em>Alea iacta est.</em>`;
+        sprechblase.innerHTML = `<small>Antwort:</small> <strong>${antwort}</strong>`;
         sprechblase.style.display = "block";
       }, delay * 1000);
     }
